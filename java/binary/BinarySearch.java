@@ -1,6 +1,7 @@
 package com.github.distribute.binary;
 /**
  * 最全面的二分查找算法
+ * 看似简单的二分查找，完全写对，非常困难
  */
 public class BinarySearch {
 
