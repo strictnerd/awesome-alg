@@ -26,7 +26,11 @@ public class fbnaci {
         } // arr[]
         return arr[n-1];
     }
-
+    /**
+     * 通过这种解法，复杂度从O（n）降低到O（1）
+     * @param n
+     * @return
+     */
     public static int fb2(int n) {
         if (n == 0) return 1;
         if (n == 1) return 2;
