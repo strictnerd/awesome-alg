@@ -1,6 +1,7 @@
 package com.xdja.security.reverse;
 
 public class Test {
+    //链表反转得思想非常简单，就是颠倒以下指针指向即可，我首先保存头指针的下一个为临时变量，头指针下一个赋null值，之后的都指向第一个
     public static ListNode reverseLink(ListNode node) {
         ListNode cur = node; ListNode pre = null;
         while (cur != null) {
