@@ -1,5 +1,7 @@
 package com.github.distribute.lru;
-
+//LRU 构造一个链表数据结构，链表中包含Node对象自身、value值。整个LRU应该包括容量，大小，链表头，
+//这样添加一个数据的时候就可以进行判断当前数据大小，如果存在则删除重新插入到头，如果不存在则判断链表是否满了，
+//如果满了删除最后一个元素，然后插入到头部
 public class LRULinkedList<T> {
     int default_capacity = 5;
     int length = 0;
