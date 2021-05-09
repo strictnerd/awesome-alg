@@ -249,4 +249,61 @@ public class Solution {
         }
         return f[m-1][n-1];
     }
+
+    /**
+     * 输入一个整型数组，数组中的一个或连续多个整数组成一个子数组。求所有子数组的和的最大值。
+     *
+     * 要求时间复杂度为O(n)。
+     * 示例1:
+     * 输入: nums = [-2,1,-3,4,-1,2,1,-5,4]
+     * 输出: 6
+     * 解释: 连续子数组 [4,-1,2,1] 的和最大，为 6。
+     * 提示：
+     *     1 <= arr.length <= 10^5
+     *     -100 <= arr[i] <= 100
+     * @param nums
+     * @return
+     */
+    public int maxSubArray(int[] nums) {
+        //1. 暴力求解，双层for循环
+        //2. 寻找重复性问题、max_sum[i] = sub_max(max_sum[i-1], 0) + sum[i]
+        int res = nums[0];
+        for (int i = 1; i < nums.length ; i++) {
+            nums[i] += Math.max(nums[i-1], 0);
+            res = Math.max(res, nums[i]);
+        }
+        return res;
+    }
+
+    /**
+     * 给你一个整数数组 nums ，请你找出数组中乘积最大的连续子数组（该子数组中至少包含一个数字），并返回该子数组所对应的乘积。
+     * 示例 1:
+     * 输入: [2,3,-2,4]
+     * 输出: 6
+     * 解释: 子数组 [2,3] 有最大乘积 6。
+     * 示例 2:
+     * 输入: [-2,0,-1]
+     * 输出: 0
+     * 解释: 结果不能为 2, 因为 [-2,-1] 不是子数组。
+     * @param nums
+     * @return
+     */
+    public int maxProduct(int[] nums) {
+        // 暴力求解，双重for循环迭代求解
+        // 找重复子问题,找出最大  max_pro[i] = max(sub_max(i-1) * max_pro[i], max_pro[i])
+        // 找出最小
+        int max = Integer.MIN_VALUE, imax = 1, imin = 1;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] < 0) {
+                int tmp = imax;
+                imax = imin;
+                imin = tmp;
+            }
+            imax = Math.max(nums[i]*imax, nums[i]);
+            imin = Math.min(nums[i]*imin, nums[i]);
+
+            max = Math.max(max, imax);
+        }
+        return max;
+    }
 }
