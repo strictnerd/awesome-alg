@@ -1,6 +1,10 @@
 package com.xdja.security.dynamic;
 
+import com.xdja.security.reverse.ListNode;
+
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * 一个机器人位于一个 m x n 网格的左上角 （起始点在下图中标记为 “Start” ）。
@@ -47,7 +51,7 @@ import java.util.Arrays;
  */
 public class Solution {
     public static void main(String[] args) {
-        int i = uniquePath(13, 7);
+       /* int i = uniquePath(13, 7);
         System.out.println(i);
 
         int j = uniquePath1(13, 7);
@@ -59,7 +63,66 @@ public class Solution {
         System.out.println(i1);
 
         int i2 = longestCommonSubsequence("abc", "ab");
-        System.out.println(i2);
+        System.out.println(i2);*/
+        List<List<Integer>> trangle = new ArrayList<>();
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        //int[][] arr = {[[2],[3,4],[6,5,7],[4,1,8,3]]};
+
+    }
+
+    /**
+     * 给定一个三角形 triangle ，找出自顶向下的最小路径和。
+     *
+     * 每一步只能移动到下一行中相邻的结点上。相邻的结点 在这里指的是 下标 与 上一层结点下标 相同或者等于 上一层结点下标 + 1 的两个结点。也就是说，如果正位于当前行的下标 i ，那么下一步可以移动到下一行的下标 i 或 i + 1 。
+     *
+     *
+     *
+     * 示例 1：
+     *
+     * 输入：triangle = [[2],[3,4],[6,5,7],[4,1,8,3]]
+     * 输出：11
+     * 解释：如下面简图所示：
+     *    2
+     *   3 4
+     *  6 5 7
+     * 4 1 8 3
+     * 自顶向下的最小路径和为 11（即，2 + 3 + 5 + 1 = 11）。
+     * @param triangle
+     * @return
+     */
+    Integer num[][];
+    public  int minTrancleTotal0(List<List<Integer>> triangle){
+        num = new Integer[triangle.size()][triangle.size()];
+        return dfs(triangle, 0, 0);
+    }
+
+    private int dfs(List<List<Integer>> triangle, int i, int j) {
+        if (i == triangle.size()) return 0;
+        if (num[i][j] != null) return num[i][j];
+        return num[i][j] = Math.min(dfs(triangle, i+1, j+1), dfs(triangle, i+1, j)) + triangle.get(i).get(j);
+    }
+
+    public static int minTrancleTotal(List<List<Integer>> triangle){
+        int size = triangle.size();
+        int[][] dp = new int[size+1][size+1];
+        for (int i = size-2; i >=0 ; i--) {
+            for (int j = 0; j <= i; j++) {
+                dp[i][j] = Math.min(dp[i+1][j], dp[i+1][j+1]) + triangle.get(i).get(j);
+            }
+        }
+        return dp[0][0];
+    }
+
+    public static int minTrancleTotal1(List<List<Integer>> triangle){
+        int size = triangle.size();
+        int dp[] = new int[size+1];
+        for (int i = size-1; i >=0 ; i--) {
+            for (int j = 0; j <= i; j++) {
+                dp[j] = Math.min(dp[j], dp[j+1]) + triangle.get(i).get(j);
+            }
+        }
+        return dp[0];
     }
 
     public static int longestCommonSubsequence(String text1, String text2) {
