@@ -6,9 +6,9 @@ public class Test {
         ListNode cur = node; ListNode pre = null;
         while (cur != null) {
             ListNode temp = cur.next;
-            cur.next = pre;
-            pre = cur;
-            cur = temp;
+            cur.next = pre; //赋值为前一个节点
+            pre = cur; //前一个节点更改为当前节点
+            cur = temp; //当前节点更改为下一个节点
         }
         return pre;
     }
