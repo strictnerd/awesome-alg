@@ -43,23 +43,23 @@ public class Test {
         if (l2 != null) p.next = l2;
         return solid.next;
     }
-
-    public static ListNode deleteLinkedK(ListNode listNode, int k) {
-        ListNode fast = listNode;
-        int i = 1;
+    //删除链表倒数第k个节点，核心思想就是快慢指针，快指针先走，慢指针随后跟上，快指针走完，慢指针就找到了需要删除的元素。
+    public static ListNode deleteLinkedLastK(ListNode listNode, int k) {
+        ListNode fast = listNode; //定义一个前进节点，并把整个链表赋给fast
+        int i = 1; // 找到正数第k个节点
         while (fast != null && i < k) {
             fast = fast.next;
             ++i;
         }
         if (fast == null) return listNode;
 
-        ListNode slow = listNode;
+        ListNode slow = listNode; //定义一个慢节点
         ListNode prev = null;
 
         while (fast.next != null) {
-            fast = fast.next;
-            prev = slow;
-            slow = slow.next;
+            fast = fast.next; //快节点继续前进
+            prev = slow; //把慢节点赋值给prev
+            slow = slow.next; //慢节点继续前进
         }
         if (prev == null) {
             listNode = listNode.next;
