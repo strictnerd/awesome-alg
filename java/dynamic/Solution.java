@@ -50,26 +50,7 @@ import java.util.List;
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  */
 public class Solution {
-    public static void main(String[] args) {
-       /* int i = uniquePath(13, 7);
-        System.out.println(i);
 
-        int j = uniquePath1(13, 7);
-        System.out.println(j);
-
-        int[][] arr = new int[1][1];
-        arr[0][0] = 0;
-        int i1 = uniquePathWithObstacle(arr);
-        System.out.println(i1);
-
-        int i2 = longestCommonSubsequence("abc", "ab");
-        System.out.println(i2);*/
-        List<List<Integer>> trangle = new ArrayList<>();
-        List<Integer> list = new ArrayList<>();
-        list.add(1);
-        //int[][] arr = {[[2],[3,4],[6,5,7],[4,1,8,3]]};
-
-    }
 
     /**
      * 给定一个三角形 triangle ，找出自顶向下的最小路径和。
@@ -305,5 +286,120 @@ public class Solution {
             max = Math.max(max, imax);
         }
         return max;
+    }
+
+    /**
+     * 给定不同面额的硬币 coins 和一个总金额 amount。编写一个函数来计算可以凑成总金额所需的最少的硬币个数。如果没有任何一种硬币组合能组成总金额，返回 -1。
+     *
+     * 你可以认为每种硬币的数量是无限的。
+     *
+     * 示例 1：
+     *
+     * 输入：coins = [1, 2, 5], amount = 11
+     * 输出：3
+     * 解释：11 = 5 + 5 + 1
+     */
+    public int coinChange(int[] coins, int amount) {
+        if(amount < 1) {
+            return 0;
+        }
+        return this.coinChange(coins, amount, new int[amount]);
+    }
+
+    private int coinChange(int[] coins, int rem, int count[]) {
+        if (rem < 0) {
+            return -1;
+        }
+
+        if (rem == 0) {
+            return 0;
+        }
+        //加入缓存，不进行重复计算
+        if (count[rem-1] != 0) {
+            return count[rem - 1];
+        }
+        //添加哨兵节点
+        int min = Integer.MAX_VALUE;
+        //遍历所有硬币
+        for (int coin : coins) {
+            //总数减去当前的硬币面值
+            int res = coinChange(coins, rem-coin, count);
+            //如果满足条件则添加一枚硬币数量
+            if (res >= 0 && res < min) {
+                min = 1 + res;
+            }
+        }
+        //缓存
+        count[rem-1] = (min == Integer.MAX_VALUE) ? -1 : min;
+        return count[rem-1];
+    }
+
+    public int coinChange1(int[] coins, int amount) {
+        if (amount < 0) {
+            return -1;
+        }
+        if (amount == 0) {
+            return 0;
+        }
+        int max = amount + 1;
+        int dp[] = new int[amount + 1];
+
+        Arrays.fill(dp, max);
+        dp[0] = 0;
+        for (int i = 1; i <= amount; i++) {
+            for (int j = 0; j < coins.length; j++) {
+                if (coins[j] <= i) {
+                    dp[i] = Math.min(dp[i], dp[i-coins[j]]+1);
+                }
+            }
+        }
+        return dp[amount] > amount ? -1 : dp[amount];
+    }
+
+    /**
+     * dp[j]代表含义：填满容量为j的背包最少需要多少硬币
+     * 初始化dp数组：因为硬币的数量一定不会超过amount，而amount <= 10410^4104，因此初始化数组值为10001；dp[0] = 0
+     * 转移方程：dp[j] = min(dp[j], dp[j - coin] + 1)
+     * 当前填满容量j最少需要的硬币 = min( 之前填满容量j最少需要的硬币, 填满容量 j - coin 需要的硬币 + 1个当前硬币）
+     * 返回dp[amount]，如果dp[amount]的值为10001没有变过，说明找不到硬币组合，返回-1
+     * @param coins
+     * @param amount
+     * @return
+     */
+    public int coinChange2(int[] coins, int amount) {
+        int dp[] = new int[amount + 1];
+        Arrays.fill(dp, 10001);
+        dp[0] = 0;
+        for (int coin : coins) {
+            for (int i = coin; i < amount + 1; i++) {
+                dp[i] = Math.min(dp[i], dp[i-coin]+1);
+            }
+            //System.out.println(coin);
+        }
+        return dp[amount] != 10001 ? dp[amount] : -1;
+    }
+
+    public static void main(String[] args) {
+       /* int i = uniquePath(13, 7);
+        System.out.println(i);
+
+        int j = uniquePath1(13, 7);
+        System.out.println(j);
+
+        int[][] arr = new int[1][1];
+        arr[0][0] = 0;
+        int i1 = uniquePathWithObstacle(arr);
+        System.out.println(i1);
+
+        int i2 = longestCommonSubsequence("abc", "ab");
+        System.out.println(i2);*/
+        //List<List<Integer>> trangle = new ArrayList<>();
+        //List<Integer> list = new ArrayList<>();
+        //list.add(1);
+        //int[][] arr = {[[2],[3,4],[6,5,7],[4,1,8,3]]};
+        int[] arr = {1,2,5};
+        Solution solution = new Solution();
+        int i = solution.coinChange2(arr, 12);
+        System.out.println(i);
     }
 }
